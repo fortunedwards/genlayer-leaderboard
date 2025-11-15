@@ -1,0 +1,27 @@
+GitHub Upload Instructions:
+
+METHOD 1 - Web Interface (Easier):
+1. Go to your GitHub repository
+2. Click "uploading an existing file"
+3. Drag and drop: index.html, logo.png, server.py, run.bat
+4. Commit the files
+
+METHOD 2 - Git Commands:
+cd C:\Users\hp\Desktop\leaderboard
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+git push -u origin main
+
+VERCEL DEPLOYMENT:
+1. Go to vercel.com
+2. Sign up/login with GitHub
+3. Click "New Project"
+4. Import your GitHub repository
+5. Deploy (Vercel will automatically detect it's a static site)
+
+Your leaderboard will be live at: https://your-project-name.vercel.app
+
+Note: Remove server.py and run.bat before uploading - they're not needed for Vercel deployment.
