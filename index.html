@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="text-center text-sm text-gray-500">
-                <span id="last-updated" style="display: none;"></span>
+                <span id="last-updated"></span>
             </div>
         </div>
         <div class="flex flex-col gap-3">
@@ -104,8 +104,9 @@
                 // Check if data has actually changed
                 const newDataHash = generateDataHash(newMembers);
                 if (previousDataHash === '') {
-                    // First load - don't set timestamp yet
+                    // First load - set initial timestamp
                     allMembers = newMembers;
+                    updateLastUpdated();
                     previousDataHash = newDataHash;
                 } else if (newDataHash !== previousDataHash) {
                     // Data actually changed
@@ -185,16 +186,12 @@
                 minute: '2-digit'
             });
             lastUpdatedTime = timeString;
-            const element = document.getElementById('last-updated');
-            element.textContent = `Last updated: ${timeString}`;
-            element.style.display = 'block';
+            document.getElementById('last-updated').textContent = `Last updated: ${timeString}`;
         }
         
         function displayCurrentTimestamp() {
             if (lastUpdatedTime) {
-                const element = document.getElementById('last-updated');
-                element.textContent = `Last updated: ${lastUpdatedTime}`;
-                element.style.display = 'block';
+                document.getElementById('last-updated').textContent = `Last updated: ${lastUpdatedTime}`;
             }
         }
         
