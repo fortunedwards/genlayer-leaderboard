@@ -103,19 +103,20 @@
                 
                 // Check if data has actually changed
                 const newDataHash = generateDataHash(newMembers);
-                if (newDataHash !== previousDataHash) {
+                if (previousDataHash === '') {
+                    // First load - don't set timestamp yet
                     allMembers = newMembers;
-                    if (previousDataHash === '') {
-                        // First load
-                        updateLastUpdated();
-                    } else {
-                        // Data changed
-                        updateLastUpdated();
-                    }
+                    previousDataHash = newDataHash;
+                    document.getElementById('last-updated').textContent = 'Monitoring for updates...';
+                } else if (newDataHash !== previousDataHash) {
+                    // Data actually changed
+                    allMembers = newMembers;
+                    updateLastUpdated();
                     previousDataHash = newDataHash;
                 } else {
+                    // No changes - keep existing timestamp
                     allMembers = newMembers;
-                    // Data unchanged - keep existing timestamp
+                    displayCurrentTimestamp();
                 }
                 
                 displayLeaderboard(allMembers);
@@ -169,6 +170,7 @@
         let currentPage = 1;
         const membersPerPage = 50;
         let previousDataHash = '';
+        let lastUpdatedTime = '';
         
         function generateDataHash(members) {
             return JSON.stringify(members.map(m => ({name: m.name, xp: m.xp})));
@@ -183,12 +185,15 @@
                 hour: '2-digit',
                 minute: '2-digit'
             });
+            lastUpdatedTime = timeString;
             document.getElementById('last-updated').textContent = `Last updated: ${timeString}`;
         }
         
-        function setInitialTimestamp() {
-            if (previousDataHash === '') {
-                updateLastUpdated();
+        function displayCurrentTimestamp() {
+            if (lastUpdatedTime) {
+                document.getElementById('last-updated').textContent = `Last updated: ${lastUpdatedTime}`;
+            } else {
+                document.getElementById('last-updated').textContent = 'No updates detected yet';
             }
         }
         
