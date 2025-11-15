@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="text-center text-sm text-gray-500">
-                <span id="last-updated">Loading...</span>
+                <span id="last-updated">Checking for updates...</span>
             </div>
         </div>
         <div class="flex flex-col gap-3">
@@ -104,10 +104,17 @@
                 const newDataHash = generateDataHash(newMembers);
                 if (newDataHash !== previousDataHash) {
                     allMembers = newMembers;
-                    updateLastUpdated();
+                    if (previousDataHash === '') {
+                        // First load
+                        updateLastUpdated();
+                    } else {
+                        // Data changed
+                        updateLastUpdated();
+                    }
                     previousDataHash = newDataHash;
                 } else {
                     allMembers = newMembers;
+                    // Data unchanged - keep existing timestamp
                 }
                 
                 displayLeaderboard(allMembers);
@@ -176,6 +183,12 @@
                 minute: '2-digit'
             });
             document.getElementById('last-updated').textContent = `Last updated: ${timeString}`;
+        }
+        
+        function setInitialTimestamp() {
+            if (previousDataHash === '') {
+                updateLastUpdated();
+            }
         }
         
         function filterMembers(searchTerm) {
